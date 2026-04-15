@@ -15,3 +15,14 @@ resources/
 
 # macOS
 .DS_Store
+
+# Hugo default output directory
+public/
+resources/
+
+# Local environment and temp files
+.hugo_build.lock
+hugo_stats.json
+
+# OS specific files
+.DS_Store
