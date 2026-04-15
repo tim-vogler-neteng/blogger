@@ -10,5 +10,8 @@ resources/
 .obsidian/workspace-mobile.json
 .obsidian/cache
 
+# Claude Code
+.claude/
+
 # macOS
 .DS_Store
