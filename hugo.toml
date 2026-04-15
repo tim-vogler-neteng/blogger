@@ -1,1 +1,7 @@
-theme = "PaperMod"
+baseURL = 'https://ttl-expired.net/'
+languageCode = 'en-us'
+title = 'TTL Expired'
+theme = 'PaperMod'
+
+[outputs]
+    home = ["HTML"]
