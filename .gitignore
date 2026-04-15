@@ -1,0 +1,14 @@
+# Hugo build output
+public/
+resources/
+
+# Hugo local server
+.hugo_build.lock
+
+# Obsidian workspace state (keep snippets and config)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# macOS
+.DS_Store
