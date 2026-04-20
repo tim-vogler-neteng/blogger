@@ -77,6 +77,69 @@ MC-LAG extends a LAG across two separate physical chassis, allowing a downstream
 - Provides chassis-level redundancy — the downstream device stays connected if one MC-LAG peer fails
 - Commonly used in access/aggregation designs where a server or CE needs redundant uplinks to two PE/aggregation switches
 
+**Key protocols and concepts:**
+- **ICCP** (Inter-Chassis Control Protocol) — the control plane between MC-LAG peers. Runs over TCP, synchronizes LACP state, link state, and MAC/ARP tables between chassis. Must be reachable between peers (typically via the ICL or a dedicated management path).
+- **ICL** — the physical or LAG link between the two MC-LAG peers. Carries ICCP control traffic and, in active-active mode, BUM (broadcast/unknown-unicast/multicast) frames that must reach both peers.
+- **mc-ae-id** — a numeric ID that ties the MC-LAG bundle together across the two peers. Must match on both.
+- **chassis-id** — differentiates the two peers: `0` on one, `1` on the other.
+- **status-control** — one peer is designated `active` for LACP control purposes; the other is `standby`.
+
+**MC-LAG modes:**
+
+| Mode | Behavior |
+|------|---------|
+| **active-active** | Both peers forward traffic simultaneously. Load-balanced across both uplinks from the downstream device. |
+| **active-standby** | Only the active peer forwards. Standby takes over on failure. |
+
+**Configuration (both peers — differences noted inline):**
+
+```
+# Step 1: ICCP peering — configure on both peers with the other peer's address
+# Peer 1
+set protocols iccp local-ip-addr 10.0.0.1
+set protocols iccp peer 10.0.0.2 session-establishment-hold-time 50
+set protocols iccp peer 10.0.0.2 redundancy-group-id-list 1
+set protocols iccp peer 10.0.0.2 liveness-detection minimum-interval 500 multiplier 3
+
+# Peer 2 (mirror with addresses swapped)
+set protocols iccp local-ip-addr 10.0.0.2
+set protocols iccp peer 10.0.0.1 session-establishment-hold-time 50
+set protocols iccp peer 10.0.0.1 redundancy-group-id-list 1
+set protocols iccp peer 10.0.0.1 liveness-detection minimum-interval 500 multiplier 3
+
+# Step 2: ICL between the two MC-LAG peers (shown as ae1)
+set interfaces ge-0/0/2 gigether-options 802.3ad ae1
+set interfaces ae1 aggregated-ether-options minimum-links 1
+set interfaces ae1 unit 0 family inet address 10.0.0.1/30   # peer 2 uses 10.0.0.2/30
+
+# Step 3: MC-LAG bundle toward the downstream device (ae0)
+# Both peers — same system-id so downstream sees one logical peer
+set interfaces ge-0/0/0 gigether-options 802.3ad ae0
+set interfaces ae0 aggregated-ether-options lacp active
+set interfaces ae0 aggregated-ether-options lacp system-id 00:01:02:03:04:05   # identical on both
+
+# mc-ae options — mc-ae-id and redundancy-group must match; chassis-id differs
+set interfaces ae0 aggregated-ether-options mc-ae mc-ae-id 1
+set interfaces ae0 aggregated-ether-options mc-ae redundancy-group 1
+set interfaces ae0 aggregated-ether-options mc-ae mode active-active
+set interfaces ae0 aggregated-ether-options mc-ae chassis-id 0   # peer 2 uses chassis-id 1
+set interfaces ae0 aggregated-ether-options mc-ae status-control active   # peer 2 uses standby
+
+set interfaces ae0 unit 0 family inet address 192.168.1.1/24
+```
+
+> `status-control active` on one peer means it originates LACP PDUs. Only one peer should be `active`; the other must be `standby`.
+
+**Monitoring:**
+
+```
+show iccp
+show iccp peer detail
+show multi-chassis mc-lag interfaces
+show interfaces ae0 detail
+show lacp interfaces ae0
+```
+
 ---
 
 ### Graceful Restart (GR)
