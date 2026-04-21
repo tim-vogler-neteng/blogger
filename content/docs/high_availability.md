@@ -60,7 +60,6 @@ set interfaces ae0 unit 0 family inet address 10.0.0.1/30
 **Monitoring:**
 
 ```
-show lacp status
 show lacp interfaces ae0
 show lacp statistics interfaces ae0
 show interfaces ae0 detail
@@ -113,15 +112,16 @@ set interfaces ae1 aggregated-ether-options minimum-links 1
 set interfaces ae1 unit 0 family inet address 10.0.0.1/30   # peer 2 uses 10.0.0.2/30
 
 # Step 3: MC-LAG bundle toward the downstream device (ae0)
-# Both peers — same system-id so downstream sees one logical peer
+# Both peers — same system-id and admin-key so downstream sees one logical peer
 set interfaces ge-0/0/0 gigether-options 802.3ad ae0
 set interfaces ae0 aggregated-ether-options lacp active
-set interfaces ae0 aggregated-ether-options lacp system-id 00:01:02:03:04:05   # identical on both
+set interfaces ae0 aggregated-ether-options lacp system-id 00:01:02:03:04:05 
+set interfaces ae0 aggregated-ether-options lacp admin-key 100
 
 # mc-ae options — mc-ae-id and redundancy-group must match; chassis-id differs
 set interfaces ae0 aggregated-ether-options mc-ae mc-ae-id 1
 set interfaces ae0 aggregated-ether-options mc-ae redundancy-group 1
-set interfaces ae0 aggregated-ether-options mc-ae mode active-active
+set interfaces ae0 aggregated-ether-options mc-ae mode active-standby
 set interfaces ae0 aggregated-ether-options mc-ae chassis-id 0   # peer 2 uses chassis-id 1
 set interfaces ae0 aggregated-ether-options mc-ae status-control active   # peer 2 uses standby
 
@@ -134,10 +134,7 @@ set interfaces ae0 unit 0 family inet address 192.168.1.1/24
 
 ```
 show iccp
-show iccp peer detail
-show multi-chassis mc-lag interfaces
-show interfaces ae0 detail
-show lacp interfaces ae0
+show interfaces mc-ae id 1 extensive
 ```
 
 ---
@@ -351,11 +348,11 @@ Negotiated interval = max(local min-interval, remote min-interval)
 
 ### Key Commands
 
-| Command | Purpose |
-|---------|---------|
-| `show lacp status` | LAG member link states |
-| `show interfaces ae0 detail` | AE interface stats and member links |
-| `show system switchover` | GRES status |
-| `show task replication` | NSR sync status |
-| `show chassis routing-engine` | RE status and mastership |
-| `show bfd session` | BFD session states and timers |
+| Command                       | Purpose                             |
+| ----------------------------- | ----------------------------------- |
+| `show lacp status`            | LAG member link states              |
+| `show interfaces ae0 detail`  | AE interface stats and member links |
+| `show system switchover`      | GRES status                         |
+| `show task replication`       | NSR sync status                     |
+| `show chassis routing-engine` | RE status and mastership            |
+| `show bfd session`            | BFD session states and timers       |
