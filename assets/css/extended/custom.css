@@ -1,20 +1,37 @@
 /* ── Header ── */
+:root {
+  --header-height: 100px;
+}
+
 .header {
+  position: relative;
   background-size: cover;
   background-position: center;
 }
 
-/* Always show light text in header since the image background is dark */
-.header .logo a,
-.header .logo a:hover,
-#menu a,
-#menu a:hover {
+/* Full-cover home link on sub pages (sits behind nav, above background) */
+.header-cover-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Keep nav and buttons clickable above the cover link */
+.header .header-nav {
+  position: relative;
+  z-index: 2;
+  min-height: var(--header-height);
+  align-items: center;
+}
+
+/* Light text on sub pages since header image is dark */
+body:not(.list) .header .logo a,
+body:not(.list) #menu a,
+body:not(.list) #menu a:hover {
   color: #e2e8f0;
 }
 
-.header .logo-switches button,
-.header .logo-switches button svg {
-  color: #e2e8f0;
+body:not(.list) .header .logo-switches button svg {
   stroke: #e2e8f0;
 }
 

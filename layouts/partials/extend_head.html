@@ -1,3 +1,4 @@
+{{- if not .IsHome }}
 {{- $img := resources.Get "ttl_thin_wide_banner.png" }}
 {{- if $img }}
 <style>
@@ -7,4 +8,5 @@
     background-position: center;
   }
 </style>
+{{- end }}
 {{- end }}
