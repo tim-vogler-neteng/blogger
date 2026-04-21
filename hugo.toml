@@ -10,3 +10,11 @@ theme = 'PaperMod'
     description = "Network engineering notes, configs, and commentary from someone who spends too much time thinking about routing tables."
     defaultTheme = "auto"
     ShowReadingTime = true
+
+  [[params.socialIcons]]
+      name = "linkedin"
+      url = "https://www.linkedin.com/in/timothy-vogler/"
+
+  [[params.socialIcons]]
+      name = "github"
+      url = "https://github.com/tim-vogler-neteng/"

@@ -24,17 +24,32 @@
   align-items: center;
 }
 
+/* Home icon on sub pages */
+.header-home-icon {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 0, 255, 1);
+  transition: color 0.15s;
+}
+
+.header-home-icon:hover {
+  color: #FF00FF;
+}
+
 /* Light text on sub pages since header image is dark */
-body:not(.list) .header .logo a,
 body:not(.list) #menu a,
 body:not(.list) #menu a:hover {
   color: #e2e8f0;
 }
 
 body:not(.list) .header .logo-switches button svg {
-  stroke: #e2e8f0;
+  stroke: #FF00FF;
 }
 
+.header .logo {
+  margin-inline-start: 0;
+}
+  
 /* ── Banner ── */
 .home-banner {
   position: relative;
@@ -166,6 +181,13 @@ body:not(.list) .header .logo-switches button svg {
 
 .post-full .post-title a:hover {
   color: var(--secondary);
+}
+
+/* ── Footer social icons ── */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
 }
 
 /* ── Responsive: stack sidebar below content on narrow screens ── */
