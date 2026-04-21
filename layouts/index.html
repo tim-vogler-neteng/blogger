@@ -2,10 +2,10 @@
 {{- $posts := where .Site.RegularPages "Type" "posts" }}
 {{- $docs  := where .Site.RegularPages "Type" "docs" }}
 {{- $latest := index (sort $posts "Date" "desc") 0 }}
+{{- $bannerImg := resources.Get "ttl-expired-banner.png" }}
 
-<div class="home-banner">
+<div class="home-banner"{{- if $bannerImg }} style="background-image: url('{{ $bannerImg.RelPermalink }}')"{{- end }}>
   <div class="home-banner-inner">
-    <h1 class="home-banner-title">{{ .Site.Title }}</h1>
     {{- with .Site.Params.description }}
     <p class="home-banner-desc">{{ . }}</p>
     {{- end }}

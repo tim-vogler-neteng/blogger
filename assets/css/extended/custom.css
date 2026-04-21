@@ -1,30 +1,39 @@
 /* ── Banner ── */
 .home-banner {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0f3460 100%);
+  position: relative;
   margin: calc(var(--gap) * -1);
   margin-bottom: var(--gap);
-  padding: 56px var(--gap) 48px;
   border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+  background: #0f172a;
+  background-size: cover;
+  background-position: center;
+  aspect-ratio: 16 / 5;
+  min-height: 180px;
+}
+
+.home-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%);
 }
 
 .home-banner-inner {
-  max-width: var(--main-width);
-  margin: 0 auto;
-}
-
-.home-banner-title {
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  font-weight: 700;
-  margin: 0 0 0.5rem;
-  color: #f1f5f9;
-  letter-spacing: -0.02em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px var(--gap) 18px;
+  z-index: 1;
 }
 
 .home-banner-desc {
-  font-size: 1.05rem;
-  color: #94a3b8;
+  font-size: 0.95rem;
+  color: #cbd5e1;
   margin: 0;
   max-width: 560px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
 
 /* ── Widen .main to accommodate the sidebar ── */
