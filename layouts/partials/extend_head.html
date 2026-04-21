@@ -1,0 +1,10 @@
+{{- $img := resources.Get "ttl_thin_wide_banner.png" }}
+{{- if $img }}
+<style>
+  .header {
+    background-image: url('{{ $img.RelPermalink }}');
+    background-size: cover;
+    background-position: center;
+  }
+</style>
+{{- end }}

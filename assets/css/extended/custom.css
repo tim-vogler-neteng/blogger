@@ -1,3 +1,23 @@
+/* ── Header ── */
+.header {
+  background-size: cover;
+  background-position: center;
+}
+
+/* Always show light text in header since the image background is dark */
+.header .logo a,
+.header .logo a:hover,
+#menu a,
+#menu a:hover {
+  color: #e2e8f0;
+}
+
+.header .logo-switches button,
+.header .logo-switches button svg {
+  color: #e2e8f0;
+  stroke: #e2e8f0;
+}
+
 /* ── Banner ── */
 .home-banner {
   position: relative;
