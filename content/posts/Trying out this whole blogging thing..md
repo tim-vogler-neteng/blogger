@@ -1,3 +1,7 @@
+---
+title: "Trying out this whole blogging thing."
+date: 2026-04-19
+---
 
 Well I've tried it before and the site languished in the forgotten corners of the internet after I lost interest. The domain lapsed. Its now an orphaned Wordpress instance participating in some botnet. I'll eventually put the droplet out of its misery but thats for another day. 
 

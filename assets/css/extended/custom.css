@@ -1,0 +1,139 @@
+/* ── Banner ── */
+.home-banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0f3460 100%);
+  margin: calc(var(--gap) * -1);
+  margin-bottom: var(--gap);
+  padding: 56px var(--gap) 48px;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.home-banner-inner {
+  max-width: var(--main-width);
+  margin: 0 auto;
+}
+
+.home-banner-title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #f1f5f9;
+  letter-spacing: -0.02em;
+}
+
+.home-banner-desc {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  margin: 0;
+  max-width: 560px;
+}
+
+/* ── Widen .main to accommodate the sidebar ── */
+.main:has(.home-layout) {
+  max-width: calc(var(--main-width) + 280px + var(--gap) * 4);
+}
+
+/* ── Two-column layout ── */
+.home-layout {
+  display: flex;
+  gap: calc(var(--gap) * 1.5);
+  align-items: flex-start;
+}
+
+.home-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.home-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--header-height) + var(--gap));
+}
+
+/* ── Sidebar ── */
+.sidebar-section {
+  background: var(--entry);
+  border: 1px solid var(--tertiary);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: var(--gap);
+}
+
+.sidebar-heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--tertiary);
+}
+
+.sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-item {
+  margin-bottom: 4px;
+}
+
+.sidebar-item:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-item a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  display: block;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sidebar-item a:hover {
+  background: var(--tertiary);
+}
+
+/* ── Full post displayed on homepage ── */
+.post-full .post-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--tertiary);
+}
+
+.post-full .post-title {
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+}
+
+.post-full .post-title a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.post-full .post-title a:hover {
+  color: var(--secondary);
+}
+
+/* ── Responsive: stack sidebar below content on narrow screens ── */
+@media (max-width: 900px) {
+  .home-layout {
+    flex-direction: column;
+  }
+
+  .home-sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .main:has(.home-layout) {
+    max-width: calc(var(--main-width) + var(--gap) * 2);
+  }
+}

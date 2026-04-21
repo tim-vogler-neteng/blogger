@@ -1,0 +1,63 @@
+{{- define "main" }}
+{{- $posts := where .Site.RegularPages "Type" "posts" }}
+{{- $docs  := where .Site.RegularPages "Type" "docs" }}
+{{- $latest := index (sort $posts "Date" "desc") 0 }}
+
+<div class="home-banner">
+  <div class="home-banner-inner">
+    <h1 class="home-banner-title">{{ .Site.Title }}</h1>
+    {{- with .Site.Params.description }}
+    <p class="home-banner-desc">{{ . }}</p>
+    {{- end }}
+  </div>
+</div>
+
+<div class="home-layout">
+  <div class="home-main">
+    {{- with $latest }}
+    <article class="post-full">
+      <header class="post-header">
+        <h1 class="post-title">
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </h1>
+        <div class="post-meta">
+          {{- partial "post_meta.html" . }}
+        </div>
+      </header>
+      <div class="post-content">
+        {{- .Content }}
+      </div>
+    </article>
+    {{- else }}
+    <p>No posts yet — check back soon.</p>
+    {{- end }}
+  </div>
+
+  <aside class="home-sidebar">
+    {{- if $posts }}
+    <div class="sidebar-section">
+      <h3 class="sidebar-heading">Posts</h3>
+      <ul class="sidebar-list">
+        {{- range (sort $posts "Date" "desc") }}
+        <li class="sidebar-item">
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </li>
+        {{- end }}
+      </ul>
+    </div>
+    {{- end }}
+    {{- if $docs }}
+    <div class="sidebar-section">
+      <h3 class="sidebar-heading">Docs</h3>
+      <ul class="sidebar-list">
+        {{- range $docs }}
+        <li class="sidebar-item">
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </li>
+        {{- end }}
+      </ul>
+    </div>
+    {{- end }}
+  </aside>
+</div>
+{{- end }}

@@ -5,3 +5,8 @@ theme = 'PaperMod'
 
 [outputs]
     home = ["HTML"]
+
+[params]
+    description = "Network engineering notes, configs, and commentary from someone who spends too much time thinking about routing tables."
+    defaultTheme = "auto"
+    ShowReadingTime = true

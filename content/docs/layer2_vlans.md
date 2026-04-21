@@ -12,8 +12,8 @@ Service provider networks often need to deliver Layer 2 connectivity between geo
 
 ### Terms
 
-- **Bridge Domain** — a Layer 2 forwarding domain. Analogous to a VLAN. Defines which interfaces share the same broadcast domain and MAC table.
-- **EVC** (Ethernet Virtual Connection) — the L2 service sold by the SP to the customer. Defines the endpoints of a Layer 2 circuit.
+- **Bridge Domain** — a Layer 2 forwarding domain. Like a VLAN. It defines which interfaces share the same broadcast domain and MAC table.
+- **EVC** (Ethernet Virtual Connection) — the L2 service sold by a SP to a customer. It defines the endpoints of a Layer 2 circuit.
 - **C-Tag** (Customer Tag) — the inner 802.1q tag. Any VLAN 1–4094 from the customer's space.
 - **S-Tag** (Service Tag) — the outer 802.1ad tag. Assigned by the SP to identify the customer. Encapsulates all of that customer's C-Tags.
 - **PBN** (Provider Bridge Network) — the entire SP Layer 2 fabric.
@@ -30,8 +30,7 @@ Service provider networks often need to deliver Layer 2 connectivity between geo
 The standard VLAN tagging protocol. Inserts a 4-byte tag into the Ethernet frame.
 
 - VLAN ID field is **12 bits** → only **4094 usable VLANs** (0 and 4095 are reserved)
-- **TPID = `0x8100`**
-- Problems for service providers: VLAN exhaustion across many customers, STP interoperability issues between customer domains, learning all customer MAC addresses
+- This creates problems for service providers: Not enough vlans to support all customers, issues with vlan overlap,  STP compatibility issues while incorporating multiple domains, and needing to learn all customer MAC addresses
 
 ---
 
@@ -39,10 +38,10 @@ The standard VLAN tagging protocol. Inserts a 4-byte tag into the Ethernet frame
 
 802.1ad stacks a second VLAN tag (S-Tag) on top of the customer's existing tag (C-Tag). The SP assigns each customer a unique S-Tag, so customer VLAN spaces are fully isolated and can overlap without conflict.
 
-- **TPID = `0x88A8`** for the outer S-Tag
-- The SP core devices only need to learn and switch on the S-Tag — they are never exposed to customer C-Tags
+- The SP **core** devices only need to learn and switch on the S-Tag — they are never exposed to customer C-Tags
 
 **TPID reference:**
+- **TPID** (Tag Protocol Identifier) —  A 16-bit field in an Ethernet frame header that identifies the frame as being VLAN-tagged and indicates the location of the tag information.
 
 | TPID | Standard | Tag Type |
 |------|----------|---------|
