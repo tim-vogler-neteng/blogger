@@ -67,44 +67,16 @@ Compound operations for multi-provider scenarios: pop-pop, pop-swap, swap-swap, 
 **PEB interface config:**
 
 ```
-interfaces {
-    ge-0/0/0 {                          # customer-facing (access)
-        unit 0 {
-            family bridge {
-                interface-mode access;
-                vlan-id 1001;           # S-Tag assigned to this customer
-            }
-        }
-    }
-    ge-0/0/2 {                          # network-facing (trunk)
-        unit 0 {
-            family bridge {
-                interface-mode trunk;
-                vlan-id 1001;
-            }
-        }
-    }
-}
-bridge-domains {
-    customer1 {
-        vlan-id 1001;
-    }
-}
-```
+# customer-facing (access)
+set interfaces ae1 unit 0 family bridge interface-mode access
+set interfaces ae1 unit 0 family bridge vlan-id 1001
 
-**Interior S-VLAN bridge config** (requires flexible tagging):
+# network-facing (trunk)
+set interfaces ge-0/0/3 unit 0 family bridge interface-mode trunk
+set interfaces ge-0/0/3 unit 0 family bridge vlan-id 1001
 
-```
-ge-0/0/2 {
-    flexible-vlan-tagging;
-    encapsulation flexible-ethernet-services;
-    unit 0 {
-        family bridge {
-            interface-mode trunk;
-            vlan-id 1001;
-        }
-    }
-}
+
+set bridge-domains Cust1 vlan-id 1001
 ```
 
 **Tunneling specific customer VLANs through the core** using `inner-vlan-id-list`:

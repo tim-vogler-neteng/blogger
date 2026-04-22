@@ -125,6 +125,8 @@ set interfaces ae0 aggregated-ether-options mc-ae mode active-standby
 set interfaces ae0 aggregated-ether-options mc-ae chassis-id 0   # peer 2 uses chassis-id 1
 set interfaces ae0 aggregated-ether-options mc-ae status-control active   # peer 2 uses standby
 
+set interfaces ae0 multi-chassis-protection 10.0.0.2 interface ae1
+
 set interfaces ae0 unit 0 family inet address 192.168.1.1/24
 ```
 
