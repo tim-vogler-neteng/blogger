@@ -3,7 +3,6 @@ title: Layer 2 Bridging, VLANs, and STP for JNCIS-SP
 date: 2026-04-15
 tags: [juniper, layer2, vlan, stp, networking]
 ---
-
 ## Layer 2 Bridging and VLANs
 
 Service provider networks often need to deliver Layer 2 connectivity between geographically separated customer sites. Junos implements this using bridge domains, which define the L2 forwarding boundaries, and 802.1ad (Q-in-Q) to tunnel customer VLAN spaces across the provider network without overlap.
@@ -74,7 +73,6 @@ set interfaces ae1 unit 0 family bridge vlan-id 1001
 # network-facing (trunk)
 set interfaces ge-0/0/3 unit 0 family bridge interface-mode trunk
 set interfaces ge-0/0/3 unit 0 family bridge vlan-id 1001
-
 
 set bridge-domains Cust1 vlan-id 1001
 ```

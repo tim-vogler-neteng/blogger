@@ -24,6 +24,7 @@ OSPF is a link-state interior gateway protocol (IGP). Each router floods Link-St
 - **Backbone Router** - Any router with at least one interface in Area 0.
 - **Internal Router** - All interfaces are in the same single area.
 
+Remember, best practice to explicitly configure the router-id. See below: 
 ```
 set routing-options router-id 4.4.4.4
 ```
@@ -76,13 +77,16 @@ On multi-access (broadcast) segments, every router forms a full adjacency only w
 - Ties broken by highest **Router ID**.
 - Election is **non-preemptive** — the DR/BDR holds their role even when a higher-priority router joins. Election re-runs only when the OSPF process restarts.
 - Priority 0 = ineligible for DR/BDR.
+```
+set protocols ospf area 0 interface ge-0/0/0 priority 0
+```
 
 **BDR role:** Takes over as DR immediately when the DR fails, without re-running a full election.
 
-**Avoiding DR election (P2P):** Configuring a link as point-to-point skips the DR/BDR election and the 2-Way state entirely, taking adjacency to Full faster (saves up to 40 seconds). It also suppresses Type 2 LSA generation.
+**Avoiding DR election (P2P):** Configuring a link as point-to-point skips the DR/BDR election and the 2-Way state entirely, taking adjacency to Full faster (saves up to 40 seconds). It also suppresses Type 2 LSA generation. The interface type needs to match on both sides of the link otherwise the adjacency won't come up.
 
 ```
-set protocols ospf interface ge-0/0/0.0 interface-type p2p
+set protocols ospf area 0 interface ge-0/0/0 interface-type p2p
 ```
 
 ---
@@ -104,7 +108,7 @@ set protocols ospf reference-bandwidth 100g
 You can also set cost manually per interface:
 
 ```
-set protocols ospf interface ge-0/0/0.0 metric 10
+set protocols ospf area 0 interface ge-0/0/0.0 metric 10
 ```
 
 ---

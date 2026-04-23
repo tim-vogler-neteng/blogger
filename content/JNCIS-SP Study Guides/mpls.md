@@ -12,7 +12,7 @@ MPLS is a forwarding mechanism that uses short, fixed-length labels to make pack
 
 ### Terms
 
-- **LSR** (Label Switching Router) - Any router participating in MPLS forwarding. Performs label push, swap, or pop.
+- **LSR** (Label Switching Router) - Any router participating in MPLS forwarding. Performs label actions push, swap, or pop.
 - **LSP** (Label Switched Path) - The unidirectional path a labeled packet takes from ingress to egress LSR.
 - **FEC** (Forwarding Equivalence Class) - A group of packets that receive identical forwarding treatment and are assigned the same label at ingress. The ingress router decides the FEC assignment; downstream routers just label-switch.
 - **Ingress LSR** - The first router in an LSP. Classifies traffic into FECs and pushes labels.
