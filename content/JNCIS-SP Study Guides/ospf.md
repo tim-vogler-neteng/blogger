@@ -1,9 +1,12 @@
 ---
 title: OSPF Concepts for JNCIS-SP
-date: 2026-04-15
-tags: [juniper, ospf, networking]
+date: 2026-04-22
+tags:
+  - juniper
+  - ospf
+  - networking
+  - commands_verified
 ---
-
 ## OSPF (Open Shortest Path First)
 
 OSPF is a link-state interior gateway protocol (IGP). Each router floods Link-State Advertisements (LSAs) describing its interfaces and neighbors. Every router builds an identical Link-State Database (LSDB) and runs the Dijkstra SPF algorithm to compute the shortest path tree. OSPF runs directly over IP (protocol 89) and uses multicast for efficiency.
@@ -135,18 +138,21 @@ Areas limit the scope of LSA flooding and allow route summarization at area bord
 
 **Area types:**
 
-| Area Type | Type 3 (Inter-area) | Type 4 | Type 5 (External) | Default Route From ABR | Notes |
-|-----------|--------------------|---------|--------------------|------------------------|-------|
-| Standard | Yes | Yes | Yes | No | Full LSA support. |
-| Backbone (0) | Yes | Yes | Yes | No | All areas connect here. |
-| Stub | Yes | No | No | Yes (metric 1) | ABR injects a default. No ASBRs allowed. |
-| Totally Stubby | No | No | No | Yes | ABR blocks Type 3/4/5. Only default route enters. |
-| NSSA | Yes | No | No (Type 7 allowed) | No (configurable) | Local ASBR can inject Type 7. No Type 5 from outside. |
-| Totally NSSA | No | No | No (Type 7 allowed) | Yes | Type 3/4/5 blocked. Local ASBR Type 7 still allowed. |
+| Area Type      | Type 3 (Inter-area) | Type 4 | Type 5 (External)   | Notes                                                 |
+| -------------- | ------------------- | ------ | ------------------- | ----------------------------------------------------- |
+| Standard       | Yes                 | Yes    | Yes                 | Full LSA support.                                     |
+| Backbone (0)   | Yes                 | Yes    | Yes                 | All areas connect here.                               |
+| Stub           | Yes                 | No     | No                  | ABR injects a default. No ASBRs allowed.              |
+| Totally Stubby | No                  | No     | No                  | ABR blocks Type 3/4/5. Only default route enters.     |
+| NSSA           | Yes                 | No     | No (Type 7 allowed) | Local ASBR can inject Type 7. No Type 5 from outside. |
+| Totally NSSA   | No                  | No     | No (Type 7 allowed) | Type 3/4/5 blocked. Local ASBR Type 7 still allowed.  |
+> A default route using an LSA type 3 can be added to nssa and stub areas. For the totally areas it'd be the only Type 3 thats flooded in the area. The default needs to be configured using the following: 
+
+```
+set protocols ospf area 0 interface ge-0/0/0.0 metric 10
+```
 
 > **"Totally" areas are not separate area types.** Totally Stubby and Totally NSSA are just Stub/NSSA areas where `no-summaries` is added to the ABR config only. All other routers in the area still think they are in a plain Stub or NSSA. The ABR is the only one doing the filtering.
-
-> **NSSA does not automatically inject a default route.** Unlike a regular stub area, the NSSA ABR does not inject a default by default. You must configure it explicitly.
 
 **Configuration:**
 
@@ -241,22 +247,16 @@ set protocols ospf area 0.0.0.0 interface lo0.0 passive
 set protocols ospf area 0.0.0.0 interface ge-0/0/0.0 bfd-liveness-detection minimum-interval 300
 ```
 
-- **Graceful Restart** — Informs neighbors before the OSPF process restarts so they continue forwarding as if the router is still up. Not enabled by default.
+- **Overload** — Pumps all ospf interface metrics to the moon. This pushes all transit traffic to any other available path. 
 
 ```
-set protocols ospf graceful-restart
+set protocols ospf overload
 ```
 
 - **prefix-export-limit** — Caps the number of external routes accepted into the OSPF domain to protect against route table explosion.
 
 ```
 set protocols ospf prefix-export-limit 1000
-```
-
-- **Virtual Links** — Allows a non-backbone area to connect to Area 0 through another area when a direct physical connection is not possible. Configured between two ABRs.
-
-```
-set protocols ospf area 0.0.0.2 virtual-link neighbor-id 3.3.3.3 transit-area 0.0.0.2
 ```
 
 ---
@@ -282,7 +282,6 @@ show ospf interface lo0.0 extensive
 show ospf database
 show ospf database detail
 show ospf database external
-show ospf database nssa
 show ospf route
 show ospf statistics
 show ospf overview
@@ -340,6 +339,33 @@ LSUpdate             18            10           0             0
    LSAck              9            18           0             0
 LSAs flooded           :                   16, last 5 seconds :            0
 LSAs retransmitted     :                    0, last 5 seconds :            0
+```
+
+**`show ospf database` — List of LSAs:**
+
+```
+root@Stubby> show ospf database
+
+    OSPF database, Area 0.0.0.1
+ Type       ID               Adv Rtr           Seq      Age  Opt  Cksum  Len
+Router  *1.1.1.1          1.1.1.1          0x80000006  2595  0x20 0x46f8  48
+Router   2.2.2.2          2.2.2.2          0x80000008    50  0x20 0x42a1  36
+Network *192.168.1.0      1.1.1.1          0x80000005  2595  0x20 0x5b63  32
+Summary  2.2.2.2          2.2.2.2          0x80000006  1091  0x20 0x525   28
+Summary  3.3.3.3          2.2.2.2          0x80000001    32  0x20 0xccf9  28
+Summary  192.168.1.2      2.2.2.2          0x80000006  1214  0x20 0x76eb  28
+```
+
+And for good measure, heres the database after `no-summaries default-metric 1` was added  to the ABR 
+```
+root@Stubby> show ospf database
+
+    OSPF database, Area 0.0.0.1
+ Type       ID               Adv Rtr           Seq      Age  Opt  Cksum  Len
+Router  *1.1.1.1          1.1.1.1          0x80000008   217  0x20 0x42fa  48
+Router   2.2.2.2          2.2.2.2          0x8000000a   218  0x20 0x3ea3  36
+Network *192.168.1.0      1.1.1.1          0x80000008   217  0x20 0x5566  32
+Summary  0.0.0.0          2.2.2.2          0x80000001     3  0x20 0xcf5d  28
 ```
 
 ---
