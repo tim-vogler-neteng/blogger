@@ -23,6 +23,7 @@ MPLS is a forwarding mechanism that uses short, fixed-length labels to make pack
 - **LIB** (Label Information Base) - The full table of all label bindings a router has received. Not all entries are actively used for forwarding.
 - **LFIB** (Label Forwarding Information Base) - The active subset of the LIB used for actual forwarding decisions. This is what the data plane uses.
 - **TED** (Traffic Engineering Database) - Populated by IGP TE extensions; stores link-state info (bandwidth, admin groups) used by CSPF to calculate constrained paths.
+- **MBB** (Make-before-Break) - Default Junos behavior where the new LSP is fully signaled and verified before traffic is switched over from the old path.
 
 ---
 
@@ -70,7 +71,7 @@ PHP is the default behavior in MPLS. The egress LSR advertises label **3** (Impl
 - **Ultimate Hop Popping:** Disables PHP, forcing the egress router to do both the label pop and the IP lookup. Required when the egress needs the label for VPN or QoS decisions.
 
 ```
-set protocols mpls label-switched-path <name> ultimate-hop-popping
+set protocols mpls label-switched-path ToR4 ultimate-hop-popping
 ```
 
 ---
@@ -138,6 +139,25 @@ RSVP is a signaling protocol used to establish explicitly routed, traffic-engine
 - Uses **soft-state** — RSVP state must be refreshed periodically or it times out.
 - Default action is penultimate hop popping.
 
+**RSVP path configuration**
+
+```
+set protocols mpls label-switched-path ToR4 from 1.1.1.1
+set protocols mpls label-switched-path ToR4 to 4.4.4.4
+```
+
+RSVP requires traffic engineering enabled and you need to ensure the IGP is configured for it
+- For OSPF
+```
+set protocols ospf traffic-engineering
+```
+
+- For ISIS
+```
+set protocols isis level 2 wide-metrics-only 
+set protocols isis traffic-engineering
+```
+
 **RSVP Message Flow**
 
 1. **PATH message** — Sent ingress → egress. Carries the ERO (the desired path), requested bandwidth, and PHOP (previous hop). Installs path state on each router along the way.
@@ -149,7 +169,7 @@ RSVP is a signaling protocol used to establish explicitly routed, traffic-engine
 RSVP uses setup and hold priorities (0 = highest, 7 = lowest) to control which LSPs can preempt others when bandwidth is constrained.
 
 ```
-set protocols mpls label-switched-path <name> priority 4 4
+set protocols mpls label-switched-path ToR4 priority 4 4
 ```
 
 **Fast Reroute (FRR)**
@@ -160,7 +180,7 @@ FRR pre-computes and pre-signals backup paths so that traffic can be rerouted in
 - **Node protection:** Protects against failure of the next-hop router.
 
 ```
-set protocols mpls label-switched-path <name> fast-reroute
+set protocols mpls label-switched-path ToR4 fast-reroute
 ```
 
 **Primary and Secondary Paths**
@@ -191,22 +211,32 @@ show route table mpls.0
 Sample `show mpls lsp` output:
 
 ```
-root@lumen-sf-pe1> show mpls lsp
+root@vRouter1> show mpls lsp
 Ingress LSP: 1 sessions
 To              From            State Rt P     ActivePath       LSPname
-172.16.0.5      172.16.0.1      Up     0 *     via-dallas       ToCust1nyc
+4.4.4.4         1.1.1.1         Up     0 *                      ToR4
 Total 1 displayed, Up 1, Down 0
+
+Egress LSP: 1 sessions
+To              From            State   Rt Style Labelin Labelout LSPname
+1.1.1.1         4.4.4.4         Up       0  1 FF       3        - ToR1
+Total 1 displayed, Up 1, Down 0
+
+Transit LSP: 0 sessions
+Total 0 displayed, Up 0, Down 0
 ```
 
 Sample `show rsvp interface` output:
 
 ```
-root@lumen-sf-pe1> show rsvp interface
-RSVP interface: 3 active
+root@vRouter1> show rsvp interface
+RSVP interface: 5 active
                           Active  Subscr- Static      Available   Reserved    Highwater
 Interface          State  resv    iption  BW          BW          BW          mark
-ge-0/0/0.0             Up       1   100%  10Gbps      9.9Gbps     100Mbps     100Mbps
-ge-0/0/1.0             Up       0   100%  10Gbps      10Gbps      0bps        0bps
+ge-0/0/0.0             Up       1   100%  1000Mbps    1000Mbps    0bps        0bps
+ge-0/0/1.0             Up       0   100%  1000Mbps    1000Mbps    0bps        0bps
+ge-0/0/5.0             Up       0   100%  1000Mbps    1000Mbps    0bps        0bps
+ge-0/0/6.0             Up       1   100%  1000Mbps    1000Mbps    0bps        0bps
 lo0.0                  Up       0   100%  0bps        0bps        0bps        0bps
 ```
 
@@ -268,7 +298,7 @@ CSPF is the path calculation algorithm used by RSVP to find a path that satisfie
 set protocols mpls admin-groups red 0
 set protocols mpls admin-groups blue 1
 set protocols mpls interface ge-0/0/0.0 admin-group red
-set protocols mpls label-switched-path <name> admin-group include-any red
+set protocols mpls label-switched-path ToR4 admin-group include-any red
 ```
 
 ---
@@ -341,17 +371,19 @@ SR requires the IGP to advertise SID information alongside normal topology data.
 **IS-IS SR:**
 
 ```
-set protocols isis source-packet-routing srgb start-label 800000 index-range 100000
-set protocols isis interface lo0.0 level 2 prefix-sid-index 1
+set chassis network-services enhanced-ip
 set protocols isis level 2 wide-metrics-only
+set protocols isis source-packet-routing srgb start-label 800000 index-range 1000
+set protocols isis source-packet-routing node-segment ipv4-index 1
 ```
 
 **OSPF SR:**
 
 ```
+set chassis network-services enhanced-ip
 set protocols ospf traffic-engineering
-set protocols ospf source-packet-routing srgb start-label 800000 index-range 100000
-set protocols ospf area 0.0.0.0 interface lo0.0 prefix-sid-index 1
+set protocols ospf source-packet-routing node-segment ipv4-index 11
+set protocols ospf source-packet-routing srgb start-label 800000 index-range 1000
 ```
 
 ---
@@ -380,9 +412,8 @@ SRv6 uses IPv6 as the data plane instead of MPLS. SIDs are encoded as **IPv6 add
 #### Monitoring
 
 ```
-show spring overview
-show spring database
-show spring database extensive
+show ospf spring sid-database
+
 show route protocol spring-te
 show route table inet.3
 ```
