@@ -1,7 +1,11 @@
 ---
 title: MPLS Concepts for JNCIS-SP
 date: 2026-04-15
-tags: [juniper, mpls, networking]
+tags:
+  - juniper
+  - mpls
+  - networking
+  - commands_verified
 ---
 
 ## MPLS (Multiprotocol Label Switching)
