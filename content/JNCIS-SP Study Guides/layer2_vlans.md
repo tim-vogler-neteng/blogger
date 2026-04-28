@@ -1,7 +1,13 @@
 ---
 title: Layer 2 Bridging, VLANs, and STP for JNCIS-SP
 date: 2026-04-15
-tags: [juniper, layer2, vlan, stp, networking]
+tags:
+  - juniper
+  - layer2
+  - vlan
+  - stp
+  - networking
+  - commands_verified
 ---
 ## Layer 2 Bridging and VLANs
 
@@ -336,14 +342,11 @@ set protocols rstp bridge-priority 4096
 # Configure an edge port (connected to an end host)
 set protocols rstp interface ge-0/0/10 edge
 
-# Enable BPDU guard on an edge port
-set protocols rstp interface ge-0/0/10 no-root-port
+# Block BPDUs on all edge ports
+set protocols rstp bpdu-block-on-edge
 
 # Enable root guard on a port
 set protocols rstp interface ge-0/0/1 no-root-port
-
-# Enable loop guard globally
-set protocols rstp no-root-port
 ```
 
 ---

@@ -1,7 +1,11 @@
 ---
 title: Protocol-Independent Routing for JNCIS-SP
 date: 2026-04-15
-tags: [juniper, routing, networking]
+tags:
+  - juniper
+  - routing
+  - networking
+  - commands_verified
 ---
 
 ## Protocol-Independent Routing
@@ -14,20 +18,20 @@ Protocol-independent routing features work regardless of which dynamic routing p
 
 When multiple protocols learn a route to the same destination, Junos uses **preference** (administrative distance) to pick the winner. Lower value wins.
 
-| Protocol / Route Type | Default Preference |
-|-----------------------|-------------------|
-| Direct (connected) | 0 |
-| Local | 0 |
-| Static | 5 |
-| OSPF Internal | 10 |
-| IS-IS Level 1 Internal | 15 |
-| IS-IS Level 2 Internal | 18 |
-| RIP | 100 |
-| Aggregate / Generated | 130 |
-| OSPF AS External | 150 |
-| IS-IS Level 1 External | 160 |
-| IS-IS Level 2 External | 165 |
-| BGP (internal and external) | 170 |
+| Protocol / Route Type       | Default Preference |
+| --------------------------- | ------------------ |
+| Direct (connected)          | 0                  |
+| Local                       | 0                  |
+| Static                      | 5                  |
+| OSPF Internal               | 10                 |
+| IS-IS Level 1 Internal      | 15                 |
+| IS-IS Level 2 Internal      | 18                 |
+| RIP                         | 100                |
+| Aggregate / Generated       | 130                |
+| OSPF AS External            | 150                |
+| IS-IS Level 1 External      | 160                |
+| IS-IS Level 2 External      | 165                |
+| BGP (internal and external) | 170                |
 
 Preference can be manually overridden on static routes and via routing policy on dynamic routes.
 
@@ -254,10 +258,12 @@ FBF makes forwarding decisions based on criteria other than destination address 
 ```
 firewall {
     family inet {
-        filter fbf-filter {
+        filter FBF-FILTER {
             term match-subnet-A {
                 from {
-                    source-address { 172.25.0.0/24; }
+                    source-address {
+                        172.25.0.0/24;
+                    }
                 }
                 then {
                     routing-instance ISP-A;
@@ -265,7 +271,9 @@ firewall {
             }
             term match-subnet-B {
                 from {
-                    source-address { 172.20.20.0/24; }
+                    source-address {
+                        172.20.20.0/24;
+                    }
                 }
                 then {
                     routing-instance ISP-B;

@@ -18,3 +18,14 @@ theme = 'PaperMod'
   [[params.socialIcons]]
       name = "github"
       url = "https://github.com/tim-vogler-neteng/"
+
+[menu]
+  [[menu.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 1
+
+  [[menu.main]]
+    name = "JNCIS-SP Study Guides"
+    url = "/jncis-sp-study-guides/"
+    weight = 2

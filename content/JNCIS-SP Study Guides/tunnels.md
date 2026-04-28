@@ -157,7 +157,7 @@ GRE tunnels are stateless by nature — neither endpoint knows if the other end 
 - If the configured number of keepalives go unacknowledged, the tunnel interface goes down and the routing protocol removes the route
 
 ```
-set interfaces gr-0/0/0 unit 0 keepalives interval 10 holdtime 30
+set protocols oam gre-tunnel interface gr-0/0/0.0 keepalive-time 10 set protocols oam gre-tunnel interface gr-0/0/0.0 hold-time 30
 ```
 
 - `interval` — how often keepalives are sent (seconds)
