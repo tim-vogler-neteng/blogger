@@ -29,3 +29,8 @@ theme = 'PaperMod'
     name = "JNCIS-SP Study Guides"
     url = "/jncis-sp-study-guides/"
     weight = 2
+
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 3
