@@ -1,11 +1,38 @@
+<style>
+  .sub-nav {
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 15%;
+    position: relative;
+    z-index: 2;
+  }
+  .sub-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sub-nav .menu {
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+  .sub-nav #menu a,
+  .sub-nav #menu a:hover {
+    color: var(--primary);
+  }
+</style>
+
 {{- if not .IsHome }}
 {{- $img := resources.Get "ttl_thin_wide_banner.png" }}
 {{- if $img }}
 <style>
-  .header {
+  .header-nav {
     background-image: url('{{ $img.RelPermalink }}');
     background-size: cover;
     background-position: center;
+    min-height: 80px;
   }
 </style>
 {{- end }}
