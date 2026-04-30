@@ -11,10 +11,7 @@ Not to be doom and gloom, but AI is coming and it ***is*** going to reshape how 
 
 I decided to stop sitting still and build something. If AI is reshaping the work, I want to be in front of the change as opposed to reacting to it. As network engineers without robust software development skills, we need to figure out how to utilize these tools to deliver value. Because if we don't, someone else will.
 
-## What I built
-
-
-Tools built over the last two months while juggling other stuff.
+## What I built with Claude 
 
 - [atlas-trace](https://github.com/tim-vogler-neteng/atlas-trace)
   - A means of programatically interacting with RIPE Atlas.
