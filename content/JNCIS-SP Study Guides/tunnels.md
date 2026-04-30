@@ -1,7 +1,12 @@
 ---
 title: IP Tunnels for JNCIS-SP
 date: 2026-04-15
-tags: [juniper, tunnels, gre, networking]
+tags:
+  - juniper
+  - tunnels
+  - gre
+  - networking
+  - commands_verified
 ---
 
 ## IP Tunnels
@@ -157,7 +162,8 @@ GRE tunnels are stateless by nature — neither endpoint knows if the other end 
 - If the configured number of keepalives go unacknowledged, the tunnel interface goes down and the routing protocol removes the route
 
 ```
-set protocols oam gre-tunnel interface gr-0/0/0.0 keepalive-time 10 set protocols oam gre-tunnel interface gr-0/0/0.0 hold-time 30
+set protocols oam gre-tunnel interface gr-0/0/0.0 keepalive-time 10 
+set protocols oam gre-tunnel interface gr-0/0/0.0 hold-time 30
 ```
 
 - `interval` — how often keepalives are sent (seconds)
@@ -177,7 +183,8 @@ set chassis fpc 0 pic 0 tunnel-services bandwidth 1g
 
 ```
 # Router A
-set interfaces gr-0/0/0 unit 0 tunnel source 10.0.0.1          # use loopback
+# use loopback
+set interfaces gr-0/0/0 unit 0 tunnel source 10.0.0.1          
 set interfaces gr-0/0/0 unit 0 tunnel destination 10.0.0.2
 set interfaces gr-0/0/0 unit 0 family inet address 172.16.0.1/30
 set interfaces gr-0/0/0 unit 0 family inet mtu 1476
@@ -266,8 +273,8 @@ traceroute 172.16.0.2 source 172.16.0.1
 
 ### Key Commands
 
-| Command | Purpose |
-|---------|---------|
-| `show interfaces gr-0/0/0 detail` | Tunnel state, counters |
-| `show interfaces gr-0/0/0 extensive` | Includes keepalive stats |
-| `ping <dest> size 1472 do-not-fragment` | MTU path test |
+| Command                                 | Purpose                  |
+| --------------------------------------- | ------------------------ |
+| `show interfaces gr-0/0/0 detail`       | Tunnel state, counters   |
+| `show interfaces gr-0/0/0 extensive`    | Includes keepalive stats |
+| `ping <dest> size 1472 do-not-fragment` | MTU path test            |

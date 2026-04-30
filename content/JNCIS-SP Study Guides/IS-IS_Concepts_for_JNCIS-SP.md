@@ -1,7 +1,11 @@
 ---
 title: IS-IS Concepts for JNCIS-SP
 date: 2026-04-15
-tags: [juniper, is-is, networking]
+tags:
+  - juniper
+  - is-is
+  - networking
+  - commands_verified
 ---
 
 ## IS-IS

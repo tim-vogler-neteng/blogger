@@ -1,7 +1,11 @@
 ---
 title: High Availability for JNCIS-SP
 date: 2026-04-15
-tags: [juniper, high-availability, networking]
+tags:
+  - juniper
+  - high-availability
+  - networking
+  - commands_verified
 ---
 
 ## High Availability
@@ -127,7 +131,7 @@ set interfaces ae0 aggregated-ether-options mc-ae status-control active   # peer
 
 set interfaces ae0 multi-chassis-protection 10.0.0.2 interface ae1
 
-set interfaces ae0 unit 0 family inet address 192.168.1.1/24
+exit 
 ```
 
 > `status-control active` on one peer means it originates LACP PDUs. Only one peer should be `active`; the other must be `standby`.
@@ -184,7 +188,6 @@ set chassis redundancy graceful-switchover
 ```
 
 ```
-show system switchover
 show chassis routing-engine
 ```
 
@@ -279,21 +282,14 @@ The negotiated interval is the **maximum** of the local `minimum-interval` and t
 
 ```
 # OSPF
-set protocols ospf area 0.0.0.0 interface ge-0/0/0.0 \
-    bfd-liveness-detection minimum-interval 300 multiplier 3
+set protocols ospf area 0.0.0.0 interface ge-0/0/0.0 bfd-liveness-detection minimum-interval 300 multiplier 3
 
 # IS-IS
-set protocols isis interface ge-0/0/0.0 \
-    bfd-liveness-detection minimum-interval 300 multiplier 3
+set protocols isis interface ge-0/0/0.0 bfd-liveness-detection minimum-interval 300 multiplier 3
 
 # BGP (multi-hop — for non-directly connected peers)
-set protocols bgp group IBGP neighbor 10.0.0.2 \
-    bfd-liveness-detection minimum-interval 300 multiplier 3
+set protocols bgp group IBGP neighbor 10.0.0.2 bfd-liveness-detection minimum-interval 300 multiplier 3
 
-# Enable echo mode
-set protocols ospf area 0.0.0.0 interface ge-0/0/0.0 \
-    bfd-liveness-detection transmit-interval minimum-interval 300 \
-    bfd-liveness-detection detection-time threshold 1000
 ```
 
 **BFD parameters:**

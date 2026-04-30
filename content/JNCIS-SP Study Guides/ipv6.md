@@ -1,7 +1,11 @@
 ---
 title: IPv6 Concepts for JNCIS-SP
 date: 2026-04-15
-tags: [juniper, ipv6, networking]
+tags:
+  - juniper
+  - ipv6
+  - networking
+  - commands_verified
 ---
 
 ## IPv6
