@@ -31,8 +31,8 @@ theme = 'PaperMod'
     weight = 1
 
   [[menu.main]]
-    name = "JNCIS-SP Study Guides"
-    url = "/jncis-sp-study-guides/"
+    name = "Juniper Study Guides"
+    url = "/juniper-study-guides/"
     weight = 2
 
   [[menu.main]]
