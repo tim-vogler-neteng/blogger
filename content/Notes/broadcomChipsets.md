@@ -9,7 +9,7 @@ tags:
 
 # Broadcom Switch Chipset Families
 
-## 1. Tomahawk Series — *"The Bandwidth Beast"*
+## 1. Tomahawk Series — *Max Bandwidth*
 
 **Focus:** Maximum throughput, low latency, and high radix (port density). These are the "packet pushers" used in the Spine and Core of hyperscale data centers.
 
@@ -24,22 +24,22 @@ Hit production volume in March 2026. Doubles capacity to **102.4 Tbps on a singl
 
 ---
 
-## 2. Trident Series — *"The Smart Edge"*
+## 2. Trident Series — *More Features*
 
-**Focus:** Feature richness, deep programmability, and enterprise-grade flexibility. Typically found in **Top-of-Rack (ToR)** and **Leaf** roles.
+**Focus:** Feature richness, deep programmability, and enterprise-grade flexibility. Typically found in Top-of-Rack and Leaf switches.
 
 ### Trident 4 (TD4)
-Introduced a compiler-programmable architecture using **NPL**, allowing network engineers to add new protocols or telemetry features without changing hardware.
+Introduced a compiler-programmable architecture using NPL, allowing network engineers to add new protocols or telemetry features without changing hardware.
 
 ### Trident 5-X12 *(Current Flagship — 16 Tbps)*
 - **NetGNT Engine:** An on-chip Neural Network inference engine that detects congestion patterns and security threats (e.g., DDoS) in real-time at line rate.
-- **Connectivity:** Bridges the gap to the spine by supporting **800G uplinks**.
+- **Connectivity:** Bridges the gap to the spine by supporting 800G uplinks
 
 ---
 
 ## 3. Jericho Series — *"The Distance & Depth Champion"*
 
-**Focus:** Deep buffers and massive routing tables. Designed for **Internet edge** or **DCI (Data Center Interconnect)** where traffic may need buffering during congestion or must travel long distances.
+**Focus:** Deep buffers and massive routing tables. Designed for Edge or DCI  routers where traffic may need buffering during congestion or must travel long distances.
 
 ### Jericho 3-AI
 Designed to compete with InfiniBand in AI backends. Provides **scheduled fabrics** to ensure zero-packet-loss for **RDMA** workloads.
