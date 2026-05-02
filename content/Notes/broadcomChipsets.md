@@ -9,51 +9,55 @@ tags:
 
 # Broadcom Switch Chipset Families
 
-## 1. Tomahawk Series — *Max Bandwidth*
+Broadcom dominates merchant silicon for data center and carrier switching. Their three main ASIC families, Tomahawk, Trident, and Jericho, each make different tradeoffs between bandwidth, feature depth, and buffer size. Most Arista, Cisco Nexus, and Juniper QFX/PTX platforms run one of these under the hood.
 
-**Focus:** Maximum throughput, low latency, and high radix (port density). These are the "packet pushers" used in the Spine and Core of hyperscale data centers.
+---
+
+## 1. Tomahawk Series
+
+**Design philosophy:** Maximum port density and throughput at the cost of feature depth. These chips use cut-through forwarding, carry shallow on-chip buffers (~50–100 MB), and support little to no L3 routing table depth. The trade-off is intentional; at spine and AI fabric scale, you want wire-rate forwarding with predictable low latency, not a large TCAM.
 
 ### Tomahawk 5 (TH5)
-The first to hit **51.2 Tbps**. It introduced "Cognitive Routing" to handle the bursty nature of AI traffic and supports **64 ports of 800GbE**.
+First chip in the family to reach 51.2 Tbps with 64 ports of 800GbE. Notable for introducing credit-based scheduling to manage incast congestion, a problem specific to AI training workloads where hundreds of GPUs complete a collective operation simultaneously and flood the network at the same instant.
 
 ### Tomahawk 6 (TH6)
-Hit production volume in March 2026. Doubles capacity to **102.4 Tbps on a single die**.
+Reached production volume in early 2026. Doubles capacity to 102.4 Tbps on a single die, using a 3nm process node.
 
-- **Key Stat:** Supports 512 ports of 200GbE or 1,024 ports of 100GbE.
-- **AI Impact:** Enables a "flat" 128,000 GPU cluster using only two switch tiers, drastically reducing the number of optics and hops required.
+- Supports 512 × 200GbE or 1,024 × 100GbE in breakout configurations.
+- At this density, a two-tier (spine-leaf) fabric can interconnect ~128,000 GPUs without needing a third tier, which reduces total fiber count and hop count significantly. Whether that's worth the cost of deploying TH6-based spines depends heavily on cluster size.
 
 ---
 
-## 2. Trident Series — *More Features*
+## 2. Trident Series
 
-**Focus:** Feature richness, deep programmability, and enterprise-grade flexibility. Typically found in Top-of-Rack and Leaf switches.
+**Design philosophy:** Feature richness over raw bandwidth. Trident chips carry larger TCAMs, richer ACL support, and more flexible telemetry pipelines. They're the right choice when you need per-flow visibility, complex policy enforcement, or protocol flexibility at the access or leaf layer.
 
 ### Trident 4 (TD4)
-Introduced a compiler-programmable architecture using NPL, allowing network engineers to add new protocols or telemetry features without changing hardware.
+Introduced a programmable pipeline using NPL, a P4-like language that lets you modify forwarding behavior (add new encapsulations, custom telemetry headers, experimental protocols) without a hardware respin. This was a meaningful shift from fixed-function pipelines.
 
-### Trident 5-X12 *(Current Flagship — 16 Tbps)*
-- **NetGNT Engine:** An on-chip Neural Network inference engine that detects congestion patterns and security threats (e.g., DDoS) in real-time at line rate.
-- **Connectivity:** Bridges the gap to the spine by supporting 800G uplinks
+### Trident 5-X12 (16 Tbps)
+- **NetGNT Engine:** An on-chip neural network inference block that classifies traffic and detects congestion patterns or anomalous flows (e.g., volumetric DDoS) at line rate. The inference runs in the datapath, not on a separate CPU, so it doesn't add latency.
+- Supports 800G uplinks to spine, which allows a leaf to be physically connected to a TH5/TH6 spine without a speed mismatch at the uplink.
 
 ---
 
-## 3. Jericho Series — *"The Distance & Depth Champion"*
+## 3. Jericho Series
 
-**Focus:** Deep buffers and massive routing tables. Designed for Edge or DCI  routers where traffic may need buffering during congestion or must travel long distances.
+**Design philosophy:** Deep buffers and large routing tables. Where Tomahawk sacrifices buffer depth for speed, Jericho inverts that. It's designed for environments where packets may need to queue for milliseconds (WAN congestion, DCI links with variable RTT) and where the FIB needs to hold full Internet routing tables.
 
 ### Jericho 3-AI
-Designed to compete with InfiniBand in AI backends. Provides **scheduled fabrics** to ensure zero-packet-loss for **RDMA** workloads.
+Targeted at lossless AI backend fabrics, the role that InfiniBand has traditionally filled. Provides scheduled fabric support to guarantee in order delivery for RDMA traffic, where a single dropped or reordered packet forces a full retransmit and stalls a GPU collective operation.
 
-### Jericho 4 *(Sampling for 2026 production)*
-- **Deep Buffers:** Uses **High Bandwidth Memory (HBM)** — the same technology found in GPUs — to buffer massive amounts of data.
-- **DCI Champion:** Optimized for "Scale-Across," connecting AI clusters that are geographically separated (**up to 100 km**) while maintaining a lossless environment.
+### Jericho 4 *(Sampling, targeting 2026 production)*
+- **HBM Buffers:** Uses High Bandwidth Memory stacked on the package, the same DRAM technology used in GPUs, to provide much deeper buffers than SRAM based designs. This matters at DCI or internet edge roles where link utilization can spike and you need to absorb bursts without dropping.
+- Targets Scale Across use cases: connecting geographically separated AI clusters (up to ~100 km) over a lossless routed fabric, where latency and reorder sensitivity of RDMA traffic otherwise makes Ethernet a poor fit.
 
 ---
 
 ## Comparison Table — Current Flagships
 
-| Family | Latest Model | Throughput | Primary Strength | Typical Deployment |
-|--------|-------------|------------|-----------------|-------------------|
-| Tomahawk | Tomahawk 6 | 102.4 Tbps | Raw Bandwidth / Density | Spine, AI Fabric Core |
-| Trident | Trident 5-X12 | 16.0 Tbps | Programmability / ML Telemetry | ToR, Enterprise Leaf |
-| Jericho | Jericho 4 | 51.2 Tbps | Deep Buffers / HBM / DCI | Internet Edge, DCI |
+| Family | Latest Model | Throughput | Buffer Depth | Primary Use Case |
+|--------|-------------|------------|--------------|-----------------|
+| Tomahawk | Tomahawk 6 | 102.4 Tbps | Shallow (~50–100 MB SRAM) | Spine, AI fabric core |
+| Trident | Trident 5-X12 | 16.0 Tbps | Moderate | ToR, enterprise leaf |
+| Jericho | Jericho 4 | 51.2 Tbps | Deep (HBM) | Internet edge, DCI, lossless AI fabric |
