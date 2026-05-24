@@ -1,5 +1,5 @@
 ---
-title: MPLS Concepts for JNCIS-SP
+title: JNCIS-SP MPLS Concepts
 date: 2026-04-15
 tags:
   - juniper

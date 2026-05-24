@@ -1,5 +1,5 @@
 ---
-title: IPv6 Concepts for JNCIS-SP
+title: JNCIS-SP IPv6 Concepts
 date: 2026-04-15
 tags:
   - juniper

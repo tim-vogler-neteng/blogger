@@ -1,5 +1,5 @@
 ---
-title: OSPF Concepts for JNCIS-SP
+title: JNCIS-SP OSPF Concepts
 date: 2026-04-22
 tags:
   - juniper

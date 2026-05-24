@@ -1,5 +1,5 @@
 ---
-title: IS-IS Concepts for JNCIS-SP
+title: JNCIS-SP IS-IS Concepts
 date: 2026-04-15
 tags:
   - juniper

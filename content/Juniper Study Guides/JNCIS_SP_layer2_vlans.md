@@ -1,5 +1,5 @@
 ---
-title: Layer 2 Bridging, VLANs, and STP for JNCIS-SP
+title: JNCIS-SP Layer 2 Bridging, VLANs, and STP
 date: 2026-04-15
 tags:
   - juniper

@@ -1,5 +1,5 @@
 ---
-title: Protocol-Independent Routing for JNCIS-SP
+title: JNCIS-SP Protocol-Independent Routing
 date: 2026-04-15
 tags:
   - juniper

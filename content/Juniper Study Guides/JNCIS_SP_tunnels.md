@@ -1,5 +1,5 @@
 ---
-title: IP Tunnels for JNCIS-SP
+title: JNCIS-SP - IP Tunnels
 date: 2026-04-15
 tags:
   - juniper

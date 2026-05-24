@@ -1,5 +1,5 @@
 ---
-title: High Availability for JNCIS-SP
+title: JNCIS-SP High Availability
 date: 2026-04-15
 tags:
   - juniper
