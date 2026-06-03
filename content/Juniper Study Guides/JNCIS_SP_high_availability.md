@@ -7,7 +7,6 @@ tags:
   - networking
   - commands_verified
 ---
-
 ## High Availability
 
 Junos provides a layered HA architecture. Link aggregation handles physical link redundancy. Graceful Restart, GRES, and NSR handle control plane failures at increasing levels of sophistication. BFD accelerates failure detection for all routing protocols. Understanding which technology does what — and what each one requires — is the core exam objective for this topic.

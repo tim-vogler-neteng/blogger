@@ -13,6 +13,5 @@ Exam Objectives
 - Virtual links
 - OSPFv2 vs. OSPFv3
 
-Given a scenario, demonstrate knowledge of how to configure or monitor single-area or multi-area OSPF:
-
-- Implement OSPF routing policy
+	Given a scenario, demonstrate knowledge of how to configure or monitor single-area or multi-area OSPF. 
+	Implement OSPF routing policy

@@ -20,6 +20,9 @@ resources/
 public/
 resources/
 
+# Draft posts (not for publishing)
+content/posts/drafts/
+
 # Local environment and temp files
 .hugo_build.lock
 hugo_stats.json
