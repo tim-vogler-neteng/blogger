@@ -9,7 +9,14 @@ theme = 'PaperMod'
       hardWraps = true
 
 [outputs]
-    home = ["HTML"]
+    home = ["HTML", "RSS", "JSON"]
+    page = ["HTML"]
+    section = ["HTML"]
+
+[sitemap]
+    changefreq = "weekly"
+    priority = 0.5
+    filename = "sitemap.xml"
 
 [params]
     description = "Network engineering notes, configs, and commentary from someone who spends too much time thinking about routing tables."
