@@ -4,6 +4,7 @@ resources/
 
 # Hugo local server
 .hugo_build.lock
+hugo_stats.json
 
 # Obsidian workspace state (keep snippets and config)
 .obsidian/workspace.json
@@ -16,16 +17,11 @@ resources/
 # macOS
 .DS_Store
 
-# Hugo default output directory
-public/
-resources/
-
 # Draft posts (not for publishing)
 content/posts/drafts/
 
-# Local environment and temp files
-.hugo_build.lock
-hugo_stats.json
+# Vim swap files
+*.swp
 
-# OS specific files
-.DS_Store
+# Excalidraw logs
+excalidraw.log
