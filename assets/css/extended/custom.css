@@ -52,53 +52,6 @@ body:not(.list) #menu a:hover {
   text-underline-offset: 3px;
 }
 
-/* ── Terminal code blocks: black background, lime green text ── */
-:root {
-  --code-block-bg: #000000;
-  --code-bg: #111111;
-}
-
-:root[data-theme="dark"] {
-  --code-block-bg: #000000;
-  --code-bg: #111111;
-}
-
-.chroma {
-  color: #39ff14 !important;
-  background-color: #000000 !important;
-}
-
-[data-theme="dark"] .chroma,
-[data-theme="dark"] .highlight pre {
-  outline: 1px solid #39ff1440;
-}
-
-/* Flatten all syntax token colors to lime green */
-.chroma :is(
-  .k,.kc,.kd,.kn,.kp,.kr,.kt,
-  .n,.na,.nb,.bp,.nc,.no,.nd,.ni,.ne,.nf,.fm,.nl,.nn,.nx,.py,.nt,.nv,.vc,.vg,.vi,.vm,
-  .l,.ld,.s,.sa,.sb,.sc,.dl,.s2,.se,.sh,.si,.sx,.sr,.s1,.ss,
-  .m,.mb,.mf,.mh,.mi,.il,.mo,
-  .o,.ow,.p,.err,
-  .gd,.ge,.gr,.gh,.gi,.go,.gp,.gs,.gu,.gt,.gl
-) {
-  color: #39ff14 !important;
-  font-weight: normal !important;
-  font-style: normal !important;
-}
-
-/* Dim comments so they read as secondary */
-.chroma :is(.c,.c1,.cm,.ch,.cs,.cp,.cpf) {
-  color: #1f8a00 !important;
-  font-style: italic !important;
-}
-
-/* Inline code: match the terminal look */
-.post-content code {
-  color: #39ff14;
-  background: #111111;
-}
-
 /* ── Post content spacing ── */
 .post-content p {
   margin-bottom: 1rem;
