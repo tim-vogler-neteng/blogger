@@ -53,7 +53,11 @@ body:not(.list) #menu a:hover {
 }
 
 /* ── Terminal code blocks: black background, lime green text ── */
-:root,
+:root {
+  --code-block-bg: #000000;
+  --code-bg: #111111;
+}
+
 :root[data-theme="dark"] {
   --code-block-bg: #000000;
   --code-bg: #111111;
@@ -62,6 +66,11 @@ body:not(.list) #menu a:hover {
 .chroma {
   color: #39ff14 !important;
   background-color: #000000 !important;
+}
+
+[data-theme="dark"] .chroma,
+[data-theme="dark"] .highlight pre {
+  outline: 1px solid #39ff1440;
 }
 
 /* Flatten all syntax token colors to lime green */

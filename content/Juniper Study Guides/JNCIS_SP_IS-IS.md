@@ -8,7 +8,7 @@ tags:
 ---
 ## IS-IS
 
-IS-IS (Intermediate System to Intermediate System) is a link-state routing protocol commonly used in service provider networks and hey, you're studying for the JNCIS-SP, so you're in luck. Like OSPF, it uses the Dijkstra SPF algorithm to compute shortest paths, but it was designed to handle all sorts of traffic. So even though it was designed with CLNP in mind, it can carry things like IPv4, IPv6, and label information for things like mpls and srv6.
+IS-IS (Intermediate System to Intermediate System) is a link-state routing protocol commonly used in service provider networks and hey, you're studying for the JNCIS-SP, so you're in luck. Like OSPF, it uses the Dijkstra SPF algorithm to compute shortest paths, but it was designed to handle all sorts of traffic. So even though it was designed with CLNP in mind, it can carry things like IPv4, IPv6, and label information for mpls and srv6.
 
 ---
 
@@ -154,6 +154,16 @@ ge-0/0/2.0            R1-PE         ! 1 Up                    23  50:0:0:1:0:2
 - **Hold**: The dead timer. Counts down until the next Hello is expected. If it hits 0, the adjacency drops.
 - **SNPA**: Subnetwork Point of Attachment. On Ethernet, this is the neighbor's MAC address.
 - **!**: Indicates the neighbor is the DIS on that segment.
+
+**Exam Gotcha**
+Take a look at the below output. Wait a minute.... There's nothing about Level 3 adjacencies anywhere in the above notes. 
+```
+root@vRouter1> show isis adjacency
+Interface             System         L State         Hold (secs) SNPA
+ge-0/0/1.0            vRouter2       3  Up                    24
+```
+
+This is Junos shorthand for a L1/L2 adjacency when the two sides are configured as point-to-point. I might have run into a question that showed something like the above and then a question about what the L3 represented. TMYK!
 
 ---
 
