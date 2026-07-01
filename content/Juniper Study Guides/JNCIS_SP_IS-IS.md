@@ -1,32 +1,30 @@
 ---
-title: JNCIS-SP IS-IS Concepts
-date: 2026-04-15
+title: JNCIS-SP IS-IS (Best IGP)
+date: 2026-06-30
 tags:
   - juniper
   - is-is
   - networking
-  - commands_verified
 ---
-
 ## IS-IS
 
-IS-IS (Intermediate System to Intermediate System) is a link-state routing protocol used primarily in service provider networks. Like OSPF, it uses the Dijkstra SPF algorithm to compute shortest paths, but runs natively over CLNS rather than IP, making it protocol-agnostic and well-suited for multi-protocol environments.
+IS-IS (Intermediate System to Intermediate System) is a link-state routing protocol commonly used in service provider networks and hey, you're studying for the JNCIS-SP, so you're in luck. Like OSPF, it uses the Dijkstra SPF algorithm to compute shortest paths, but it was designed to handle all sorts of traffic. So even though it was designed with CLNP in mind, it can carry things like IPv4, IPv6, and label information for things like mpls and srv6.
 
 ---
 
 ### Terms
 
-- **ES** (End System) - A host that originates and receives packets. ES-to-ES communication is host-to-host.
-- **IS** (Intermediate System) - A router that forwards packets. IS-IS describes routing between intermediate systems.
-- **CLNS/CLNP** - IS-IS runs natively over the Connectionless Network Service (CLNS) using CLNP, not IP. This is a key distinction from OSPF.
+- **ES** (End System) - A host that sends and receives packets. ES-to-ES communication is host-to-host. A server, a laptop, a IP phone, etc. 
+- **IS** (Intermediate System) - A router that forwards packets. IS-IS describes routing between intermediate systems. 
+- **CLNP** (Connectionless-mode Network Protocol) A competing alternative to IP designed during the early days of networking. ISIS was created to carry CLNP traffic. 
 - **NSAP** (Network Service Access Point) - The addressing scheme IS-IS uses instead of IP addresses.
 - **NET** (Network Entity Title) - The IS-IS address configured on a router. Format: `Area ID . System ID . NSEL`
   - Example: `49.0001.1921.6800.1001.00`
-    - `49.0001` — Area ID
+    - `49` — AFI (Just keep this as 49. And if curious read about AFI as to why)
+    - `0001` — Area ID
     - `1921.6800.1001` — System ID (6 bytes, often derived from an IP like 192.168.1.1)
     - `00` — NSEL (always 00 for a router)
-- **System ID** - 6-byte unique identifier for a router within an area (similar to OSPF Router ID).
-- **NSEL** (N-Selector) - The last byte of a NET, always `00` for routers.
+- **System ID** - similar to a OSPF Router ID
 - **L1 router** - Routes only within its area; sends traffic to unknown destinations toward the nearest L1/L2 router.
 - **L2 router** - Routes between areas and toward other ASes.
 - **L1/L2 router** - Does both; this is the Junos default.
@@ -38,7 +36,7 @@ IS-IS (Intermediate System to Intermediate System) is a link-state routing proto
 - Runs the Dijkstra SPF algorithm.
 - L1 and L2 maintain **separate LSDBs** — SPF is run independently for each level.
 - Each router originates its own LSP and floods it throughout its level.
-- LSDB synchronization is handled by CSNPs (full sync) and PSNPs (fill gaps).
+- LSDB synchronization is handled by CSNPs (full sync) and PSNPs (fill gaps). More on these below.  
 
 ---
 
