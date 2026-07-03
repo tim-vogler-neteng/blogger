@@ -25,8 +25,8 @@ tags:
 
 * #### **Function of routers and switches** 
 
-  * Routers use l3 information to forward packets between networks  
-  * Switches use l2 info to forward packets on the lan 
+  * Routers use L3 information to forward packets between networks  
+  * Switches use L2 info to forward packets on the lan 
 
 * #### **Ethernet networks** 
 
