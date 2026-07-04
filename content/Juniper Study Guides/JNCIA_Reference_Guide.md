@@ -10,7 +10,7 @@ tags:
 
 **Last Updated: 3/17/26**
 
-**Note to Test Takers:** This document is a **Summary Reference**, not a replacement for a comprehensive course and hands on experience in a lab. I recommend the CBT Nugget course as Knox is great explaining networking concepts with right amount of enthusiasm. 
+**Note to Test Takers:** This document is a **Summary Reference**, not a replacement for a comprehensive course and hands on experience in a lab. I recommend the CBT Nuggets course because Knox is great at explaining networking concepts with the right amount of enthusiasm. 
 
 **Table of Contents**
 
@@ -22,10 +22,19 @@ tags:
 6. [**Routing Fundamentals**](#routing-fundamentals)   
 7. [**Routing Policy and Firewall Filters**](#routing-policy-and-firewall-filters)   
 8. [**Glossary**](#glossary)
-9. [**Lab Recomendations**](#lab-recomendations)
+9. [**Lab Recommendations**](#lab-recommendations)
 
 ### **Networking Fundamentals**  {#networking-fundamentals}
 
+* #### The OSI Model
+	* Where it all starts and I'm not sure if its really covered in the JNCIA exam. This is an industry standard crafted back in the 1970s.
+	* The model has seven layers from physical up through application. 
+	* The really important bit is the breakdown of the lower layers as you will see L1, L2, L3, L4 all over the place.
+	* These are logical separations of the networking stack
+		* L1 - Physical layer - Think cabling and electrical or photonic pulses on said cabling
+		* L2 - Data-link layer - Think frames, ethernet, and mac addresses
+		* L3 - Network layer - Packets, IPs, and routing
+		* L4 - Transport layer - Segments, TCP/UDP, and SYN+ACKs 
 * #### **Function of routers and switches** 
 
   * Routers use L3 information to forward packets between networks  
@@ -496,8 +505,8 @@ tags:
   * **Route Preference:** Juniper's term for Administrative Distance. Lower numbers are more preferred (e.g., Direct \= 0, OSPF \= 10, BGP \= 170).  
   * **Routing Policy:** Used to control the flow of routing information into or out of the Routing Table.
 * 
-### **Lab Recomendation**s {#lab-recomendations}
-* I can't stress the importance enough of having a lab environment to run through these different concepts. Yes you can memorize enough material to pass the exam but then its just a piece of paper. Or, these days, just a digital stamp you can add to your LinkedIn profile. 
+### **Lab Recommendations** {#lab-recommendations}
+* I can't stress enough the importance  of having a lab environment to run through these different concepts. Yes you can memorize enough material to pass the exam but then its just a piece of paper. Or, these days, just a digital stamp you can add to your LinkedIn profile. 
 * The most important aspect is when you try to build a topology and it **doesn't** work. Then you're pushing show commands and pouring through the config to find the one little thing you missed. And that there is Network Engineering in a nutshell. 
 * My gear
 	* When I first passed the JNCIA ages ago I ran a couple of switches and an ancient J series firewall. It got the job done but was far from ideal, takes up too much space, and is far too loud. 
